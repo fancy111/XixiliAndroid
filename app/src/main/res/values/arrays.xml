@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="hotel_type">
+        <item>全部</item>
+        <item>三星</item>
+        <item>四星</item>
+        <item>五星</item>
+        <item>经济型</item>
+        <item>青年旅馆</item>
+        <item>民宿</item>
+        <item>客栈</item>
+    </string-array>
+    <string-array name="hotel_order">
+        <item>综合排序</item>
+        <item>好评优先</item>
+        <item>安全优先</item>
+        <item>热门优先</item>
+        <item>距离优先</item>
+        <item>低价优先</item>
+    </string-array>
+</resources>
