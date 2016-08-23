@@ -7,6 +7,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -83,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -130,6 +134,38 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
+    }
+
+    //实现价格跳转界面
+    public void priceTrend(View view){
+        Intent intent = new Intent(MainActivity.this,PirceTrendActivity.class);
+        intent.putExtra("city",city);
+        startActivity(intent);
+    }
+
+    //实现actionbar中的选项按钮，重写父类中的方法
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+       //步骤1：动态引入menu菜单的布局文件
+        MenuInflater inflater = getMenuInflater();
+        //步骤2：使用inflater中的inflate方法锁定布局文件
+        inflater.inflate(R.menu.actionbar_menu_register,menu);
+        return true;
+    }
+
+    //实现actionbar选项点击事件处理
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        //判断系统回去的item
+        switch(item.getItemId()){
+            case R.id.ab_return:
+                Toast.makeText(getApplicationContext(),"actionbar",Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                break;
+
+        }
+        return true;
     }
 
     //根据用户选择的关键字，进行筛选

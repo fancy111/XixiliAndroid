@@ -7,14 +7,19 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.TranslateAnimation;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RatingBar;
@@ -34,6 +39,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.io.AbstractMessageParser;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
@@ -51,6 +57,8 @@ public class Select_roomActivity extends AppCompatActivity {
 
     //创建组件
     private GridView gdvRoomNum;
+    private ListView lstdistance;
+    private ListView lsttype;
 
     //储存该房型和酒店下的房间列表
     private List<Room> roomList = new ArrayList<Room>();
@@ -69,7 +77,8 @@ public class Select_roomActivity extends AppCompatActivity {
     private String responseText;
 
     //酒店图标被点击
-    private boolean click = false;
+    private boolean isDistance = true;
+    private boolean isType = true;
 
     //该页面
     Intent intent;
@@ -81,6 +90,14 @@ public class Select_roomActivity extends AppCompatActivity {
 
         //获取组件
         gdvRoomNum = (GridView) findViewById(R.id.gdvRoomNum);
+        lstdistance = (ListView) findViewById(R.id.spnOrder);
+        lsttype = (ListView) findViewById(R.id.spnType);
+
+        lstdistance.setVisibility(View.GONE);
+        lsttype.setVisibility(View.GONE);
+
+        lstdistance.setOnItemClickListener(new ss());
+        lsttype.setOnItemClickListener(new ss());
 
         //获取参数
         intent = this.getIntent();
@@ -89,7 +106,6 @@ public class Select_roomActivity extends AppCompatActivity {
 
         //开启线程，请求服务器连接
         new Thread(new PostRunner()).start();
-
 
         //绑定适配器
         adapter = new MyAdapter();
@@ -115,6 +131,76 @@ public class Select_roomActivity extends AppCompatActivity {
         };
     }
 
+    public void type(View v){
+
+        if(isType){
+            lsttype.setVisibility(View.VISIBLE);
+            AnimationSet animationSet = new AnimationSet(true);
+            TranslateAnimation translateAnimation = new TranslateAnimation(
+                    Animation.RELATIVE_TO_PARENT,0f,
+                    Animation.RELATIVE_TO_PARENT,0f,
+                    Animation.RELATIVE_TO_SELF,-1f,
+                    Animation.RELATIVE_TO_SELF,0f
+            );
+            translateAnimation.setDuration(500);
+            animationSet.addAnimation(translateAnimation);
+            lsttype.startAnimation(animationSet);
+            isType = !isType;
+        }
+        else
+        {
+            lsttype.setVisibility(View.GONE);
+            isType = true;
+        }
+        lstdistance.setVisibility(View.GONE);
+        isDistance = true;
+    }
+
+    public void distance(View v){
+
+        if(isDistance)
+        {
+            lstdistance.setVisibility(View.VISIBLE);
+            AnimationSet animationSet = new AnimationSet(true);
+            TranslateAnimation translateAnimation = new TranslateAnimation(
+                    Animation.RELATIVE_TO_PARENT,0f,
+                    Animation.RELATIVE_TO_PARENT,0f,
+                    Animation.RELATIVE_TO_SELF,-1f,
+                    Animation.RELATIVE_TO_SELF,0f
+            );
+            translateAnimation.setDuration(500);
+            animationSet.addAnimation(translateAnimation);
+            lstdistance.startAnimation(animationSet);
+            isDistance = !isDistance;
+        }
+        else
+        {
+            lstdistance.setVisibility(View.GONE);
+            isDistance = true;
+        }
+        lsttype.setVisibility(View.GONE);
+        isType = true;
+    }
+
+    private class ss implements AdapterView.OnItemClickListener{
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            switch (adapterView.getId()){
+                case R.id.spnType:
+                    Toast.makeText(getApplicationContext(),"type"+i,Toast.LENGTH_SHORT).show();
+                    lsttype.setVisibility(View.GONE);
+                    isType = true;
+                    break;
+                case R.id.spnOrder:
+                    Toast.makeText(getApplicationContext(),"order"+i,Toast.LENGTH_SHORT).show();
+                    lstdistance.setVisibility(View.GONE);
+                    isDistance = true;
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
 
     //点击确定按钮返回
     public void confirmReturn(View v){

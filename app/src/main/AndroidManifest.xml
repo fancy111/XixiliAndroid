@@ -20,7 +20,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".WriteOrderActivity" />
-        <activity android:name=".Select_roomActivity"></activity>
+        <activity android:name=".Select_roomActivity" />
+        <activity android:name=".PirceTrendActivity"></activity>
     </application>
 
 </manifest>
